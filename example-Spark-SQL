@@ -1,0 +1,683 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md \nThis Notebook demonstrates Spark SQL and visualization capabilities for a public data set about \u003ca href \u003d \"https:\u0026#47\u0026#47news.ycombinator.com\" target\u003d\"_blank\"\u003eHacker News\u003c/a\u003e. The orignal source of the data can be found at \u003ca href \u003d \"https:\u0026#47\u0026#47github.com\u0026#47arnauddri\u0026#47hn#dumps\" target\u003d\"_blank\"\u003eGitHub\u003c/a\u003e. We\u0027ve stored the data in Amazon S3 for the purposes of this example, and we\u0027ll access it via our Hive metastore schema. There are two tables in this data set.\n- stories: 1,553,934 rows, 171 MB uncompressed\n- comments: 7,111,949 rows, 959 MB uncompressed\n\nFirst, we\u0027ll create a database entry for this data set, then we\u0027ll create table entries in our Hive metastore. ",
+      "dateUpdated": "Dec 1, 2015 8:28:39 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448602511517_901459695",
+      "id": "20151127-053511_1272277540",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eThis Notebook demonstrates Spark SQL and visualization capabilities for a public data set about \u003ca href \u003d \"https:\u0026#47\u0026#47news.ycombinator.com\" target\u003d\"_blank\"\u003eHacker News\u003c/a\u003e. The orignal source of the data can be found at \u003ca href \u003d \"https:\u0026#47\u0026#47github.com\u0026#47arnauddri\u0026#47hn#dumps\" target\u003d\"_blank\"\u003eGitHub\u003c/a\u003e. We\u0027ve stored the data in Amazon S3 for the purposes of this example, and we\u0027ll access it via our Hive metastore schema. There are two tables in this data set.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003estories: 1,553,934 rows, 171 MB uncompressed\u003c/li\u003e\n\u003cli\u003ecomments: 7,111,949 rows, 959 MB uncompressed\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eFirst, we\u0027ll create a database entry for this data set, then we\u0027ll create table entries in our Hive metastore.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Nov 27, 2015 5:35:11 AM",
+      "dateStarted": "Dec 1, 2015 8:28:30 AM",
+      "dateFinished": "Dec 1, 2015 8:28:30 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Create hacker news database",
+      "text": "%sql\ncreate database if not exists hacker_news",
+      "dateUpdated": "Nov 27, 2015 5:05:12 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true,
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448007987631_1595902444",
+      "id": "20151120-082627_1201026079",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "result\n"
+      },
+      "dateCreated": "Nov 20, 2015 8:26:27 AM",
+      "dateStarted": "Nov 27, 2015 5:05:12 AM",
+      "dateFinished": "Nov 27, 2015 5:06:41 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Create stories Table",
+      "text": "%sql\nCREATE EXTERNAL TABLE If NOT EXISTS `hacker_news.stories`(\n  `id` int, \n  `created_at` string, \n  `created_at_i` int, \n  `author` string, \n  `points` int, \n  `url_hostname` string, \n  `num_comments` int, \n  `title` string)\nROW FORMAT DELIMITED \n  FIELDS TERMINATED BY \u0027,\u0027 \nSTORED AS PARQUET\nLOCATION\n  \u0027s3://paid-qubole/default-datasets/hacker_news/stories_parquet\u0027\n",
+      "dateUpdated": "Nov 27, 2015 5:06:46 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true,
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448008013378_-15780050",
+      "id": "20151120-082653_495288634",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "result\n"
+      },
+      "dateCreated": "Nov 20, 2015 8:26:53 AM",
+      "dateStarted": "Nov 27, 2015 5:06:46 AM",
+      "dateFinished": "Nov 27, 2015 5:06:50 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Create Comments table",
+      "text": "%sql\nCREATE EXTERNAL TABLE If NOT EXISTS `hacker_news.comments`(\n  `id` int, \n  `created_at` string, \n  `created_at_i` int, \n  `author` string, \n  `points` int, \n  `story_id` int, \n  `parent_id` int, \n  `url_hostname` string, \n  `comment_text` string)\nROW FORMAT DELIMITED \n  FIELDS TERMINATED BY \u0027,\u0027 \nSTORED AS PARQUET \nLOCATION\n  \u0027s3://paid-qubole/default-datasets/hacker_news/comments_parquet\u0027",
+      "dateUpdated": "Nov 27, 2015 5:07:07 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "result",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "result",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true,
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448008161944_1308958030",
+      "id": "20151120-082921_813047857",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "result\n"
+      },
+      "dateCreated": "Nov 20, 2015 8:29:21 AM",
+      "dateStarted": "Nov 27, 2015 5:07:07 AM",
+      "dateFinished": "Nov 27, 2015 5:07:08 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nWith the Notebook interface, we can show our work iteratively and gradually get to a desired answer. Here\u0027s a first attempt at plotting the number of stories and comments in Hacker News over time. As you can see, there is a large range in the results, primarily because there is more activity on the site during weekdays than on weekends. While this is useful, there\u0027s a lot of noise in this graph that is undesirable to see when looking to find big trends over a large period of time. \n\n\u003cbr\u003e\n\nBy default, the Notebook limits the outputs of commands to 1,000 results. You can change this setting by visiting the Interpreters link at the top of this page. There are other settings you can set there also, such as the idle timeout value and whether to enable concurrent SQL commands. ",
+      "dateUpdated": "Dec 1, 2015 8:40:09 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448602571732_-128235631",
+      "id": "20151127-053611_723920474",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eWith the Notebook interface, we can show our work iteratively and gradually get to a desired answer. Here\u0027s a first attempt at plotting the number of stories and comments in Hacker News over time. As you can see, there is a large range in the results, primarily because there is more activity on the site during weekdays than on weekends. While this is useful, there\u0027s a lot of noise in this graph that is undesirable to see when looking to find big trends over a large period of time.\u003c/p\u003e\n\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\n\u003cp\u003eBy default, the Notebook limits the outputs of commands to 1,000 results. You can change this setting by visiting the Interpreters link at the top of this page. There are other settings you can set there also, such as the idle timeout value and whether to enable concurrent SQL commands.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Nov 27, 2015 5:36:11 AM",
+      "dateStarted": "Dec 1, 2015 8:40:08 AM",
+      "dateFinished": "Dec 1, 2015 8:40:08 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Number Of Stories And Comments, 1st Version",
+      "text": "%sql\nselect\nto_date(created_at) as DATE,\ncount(id) as NUM_STORIES,\nsum(num_comments) as NUM_COMMENTS\nfrom hacker_news.stories\ngroup by to_date(created_at)\norder by DATE",
+      "user": "shuang@qubole.com",
+      "dateUpdated": "Apr 13, 2017 2:43:24 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "pieChart",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            },
+            {
+              "name": "NUM_COMMENTS",
+              "index": 2.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true,
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448008303227_179902254",
+      "id": "20151120-083143_13122085",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "DATE\tNUM_STORIES\tNUM_COMMENTS\n2006-10-09\t15\t34\n2006-10-10\t12\t27\n2006-10-11\t5\t7\n2006-10-12\t6\t6\n2006-10-13\t2\t2\n2006-10-14\t2\t3\n2006-10-15\t1\t1\n2006-10-17\t1\t1\n2006-10-21\t1\t1\n2006-10-22\t1\t1\n2006-12-14\t1\t1\n2007-02-19\t31\t119\n2007-02-20\t44\t166\n2007-02-21\t87\t1692\n2007-02-22\t48\t195\n2007-02-23\t31\t77\n2007-02-25\t26\t66\n2007-02-26\t50\t126\n2007-02-27\t38\t105\n2007-02-28\t55\t136\n2007-03-01\t57\t74\n2007-03-02\t50\t79\n2007-03-03\t65\t108\n2007-03-04\t46\t94\n2007-03-05\t77\t164\n2007-03-06\t65\t90\n2007-03-07\t49\t95\n2007-03-08\t82\t197\n2007-03-09\t64\t242\n2007-03-10\t29\t83\n2007-03-11\t37\t129\n2007-03-12\t53\t106\n2007-03-13\t55\t184\n2007-03-14\t63\t157\n2007-03-15\t66\t154\n2007-03-16\t65\t112\n2007-03-17\t43\t64\n2007-03-18\t47\t60\n2007-03-19\t69\t140\n2007-03-20\t46\t128\n2007-03-21\t77\t224\n2007-03-22\t64\t201\n2007-03-23\t53\t117\n2007-03-24\t29\t41\n2007-03-25\t26\t117\n2007-03-26\t60\t215\n2007-03-27\t69\t159\n2007-03-28\t9\t5\n2007-04-07\t34\t118\n2007-04-08\t46\t200\n2007-04-09\t72\t336\n2007-04-10\t105\t456\n2007-04-11\t77\t361\n2007-04-12\t73\t224\n2007-04-13\t78\t305\n2007-04-14\t58\t115\n2007-04-15\t30\t139\n2007-04-16\t72\t232\n2007-04-17\t93\t386\n2007-04-18\t86\t384\n2007-04-19\t89\t413\n2007-04-20\t87\t295\n2007-04-21\t94\t177\n2007-04-22\t47\t262\n2007-04-23\t73\t244\n2007-04-24\t79\t224\n2007-04-25\t92\t256\n2007-04-26\t73\t305\n2007-04-27\t88\t227\n2007-04-28\t42\t171\n2007-04-29\t67\t138\n2007-04-30\t80\t175\n2007-05-01\t78\t186\n2007-05-02\t96\t243\n2007-05-03\t103\t217\n2007-05-04\t89\t370\n2007-05-05\t67\t134\n2007-05-06\t56\t155\n2007-05-07\t83\t259\n2007-05-08\t94\t127\n2007-05-09\t97\t178\n2007-05-10\t89\t249\n2007-05-11\t68\t227\n2007-05-12\t52\t107\n2007-05-13\t38\t97\n2007-05-14\t88\t218\n2007-05-15\t85\t228\n2007-05-16\t56\t120\n2007-05-17\t64\t214\n2007-05-18\t65\t194\n2007-05-19\t31\t112\n2007-05-20\t52\t112\n2007-05-21\t71\t160\n2007-05-22\t71\t154\n2007-05-23\t56\t183\n2007-05-24\t65\t217\n2007-05-25\t73\t149\n2007-05-26\t34\t95\n2007-05-27\t39\t68\n2007-05-28\t31\t84\n2007-05-29\t56\t176\n2007-05-30\t63\t156\n2007-05-31\t60\t165\n2007-06-01\t51\t155\n2007-06-02\t20\t24\n2007-06-03\t54\t99\n2007-06-04\t43\t119\n2007-06-05\t67\t124\n2007-06-06\t59\t83\n2007-06-07\t52\t95\n2007-06-08\t40\t101\n2007-06-09\t50\t64\n2007-06-10\t34\t50\n2007-06-11\t56\t173\n2007-06-12\t64\t244\n2007-06-13\t73\t192\n2007-06-14\t61\t201\n2007-06-15\t62\t178\n2007-06-16\t32\t72\n2007-06-17\t36\t121\n2007-06-18\t56\t187\n2007-06-19\t69\t335\n2007-06-20\t79\t210\n2007-06-21\t48\t154\n2007-06-22\t54\t188\n2007-06-23\t19\t70\n2007-06-24\t31\t67\n2007-06-25\t49\t187\n2007-06-26\t59\t294\n2007-06-27\t69\t167\n2007-06-28\t63\t165\n2007-06-29\t40\t114\n2007-06-30\t21\t126\n2007-07-01\t30\t96\n2007-07-02\t41\t228\n2007-07-03\t53\t106\n2007-07-04\t42\t46\n2007-07-05\t54\t104\n2007-07-06\t55\t91\n2007-07-07\t31\t94\n2007-07-08\t35\t103\n2007-07-09\t52\t151\n2007-07-10\t61\t132\n2007-07-11\t63\t109\n2007-07-12\t52\t159\n2007-07-13\t57\t115\n2007-07-14\t34\t88\n2007-07-15\t27\t75\n2007-07-16\t60\t245\n2007-07-17\t60\t155\n2007-07-18\t72\t280\n2007-07-19\t83\t149\n2007-07-20\t65\t204\n2007-07-21\t36\t87\n2007-07-22\t31\t94\n2007-07-23\t70\t161\n2007-07-24\t66\t162\n2007-07-25\t73\t197\n2007-07-26\t78\t147\n2007-07-27\t69\t137\n2007-07-28\t29\t131\n2007-07-29\t48\t141\n2007-07-30\t93\t142\n2007-07-31\t86\t381\n2007-08-01\t86\t236\n2007-08-02\t91\t196\n2007-08-03\t86\t204\n2007-08-04\t70\t194\n2007-08-05\t37\t128\n2007-08-06\t89\t183\n2007-08-07\t75\t356\n2007-08-08\t115\t249\n2007-08-09\t94\t250\n2007-08-10\t77\t225\n2007-08-11\t37\t97\n2007-08-12\t48\t226\n2007-08-13\t65\t221\n2007-08-14\t105\t280\n2007-08-15\t114\t203\n2007-08-16\t87\t376\n2007-08-17\t87\t267\n2007-08-18\t46\t143\n2007-08-19\t52\t182\n2007-08-20\t109\t258\n2007-08-21\t101\t358\n2007-08-22\t102\t314\n2007-08-23\t89\t506\n2007-08-24\t113\t336\n2007-08-25\t53\t85\n2007-08-26\t40\t108\n2007-08-27\t101\t285\n2007-08-28\t110\t387\n2007-08-29\t83\t275\n2007-08-30\t110\t369\n2007-08-31\t104\t438\n2007-09-01\t49\t104\n2007-09-02\t47\t219\n2007-09-03\t70\t179\n2007-09-04\t103\t308\n2007-09-05\t131\t480\n2007-09-06\t112\t382\n2007-09-07\t97\t464\n2007-09-08\t61\t305\n2007-09-09\t68\t224\n2007-09-10\t94\t360\n2007-09-11\t133\t417\n2007-09-12\t108\t304\n2007-09-13\t97\t199\n2007-09-14\t88\t272\n2007-09-15\t51\t331\n2007-09-16\t46\t280\n2007-09-17\t103\t338\n2007-09-18\t117\t532\n2007-09-19\t92\t477\n2007-09-20\t83\t503\n2007-09-21\t71\t441\n2007-09-22\t52\t113\n2007-09-23\t43\t193\n2007-09-24\t121\t374\n2007-09-25\t86\t327\n2007-09-26\t98\t305\n2007-09-27\t82\t333\n2007-09-28\t99\t323\n2007-09-29\t60\t199\n2007-09-30\t43\t180\n2007-10-01\t97\t372\n2007-10-02\t90\t365\n2007-10-03\t115\t364\n2007-10-04\t99\t377\n2007-10-05\t96\t451\n2007-10-06\t80\t330\n2007-10-07\t66\t163\n2007-10-08\t89\t374\n2007-10-09\t93\t405\n2007-10-10\t116\t420\n2007-10-11\t91\t394\n2007-10-12\t90\t357\n2007-10-13\t62\t313\n2007-10-14\t65\t117\n2008-01-17\t15\t26\n2008-01-18\t158\t429\n2008-01-19\t81\t294\n2008-01-20\t85\t259\n2008-01-21\t127\t442\n2008-01-22\t143\t420\n2008-01-23\t166\t449\n2008-01-24\t168\t502\n2008-01-25\t128\t392\n2008-01-26\t82\t286\n2008-01-27\t69\t418\n2008-01-28\t151\t394\n2008-01-29\t182\t562\n2008-01-30\t152\t357\n2008-01-31\t128\t216\n2008-02-01\t172\t360\n2008-02-02\t95\t314\n2008-02-03\t83\t288\n2008-02-04\t126\t414\n2008-02-05\t157\t407\n2008-02-06\t132\t431\n2008-02-07\t178\t1003\n2008-02-08\t214\t427\n2008-02-09\t81\t248\n2008-02-10\t75\t271\n2008-02-11\t146\t394\n2008-02-12\t153\t616\n2008-02-13\t177\t747\n2008-02-14\t172\t528\n2008-02-15\t135\t397\n2008-02-16\t90\t629\n2008-02-17\t97\t357\n2008-02-18\t143\t507\n2008-02-19\t202\t537\n2008-02-20\t197\t606\n2008-02-21\t174\t633\n2008-02-22\t179\t580\n2008-02-23\t135\t404\n2008-02-24\t119\t374\n2008-02-25\t144\t553\n2008-02-26\t185\t709\n2008-02-27\t176\t466\n2008-02-28\t159\t494\n2008-02-29\t140\t464\n2008-03-01\t100\t284\n2008-03-02\t92\t454\n2008-03-03\t155\t570\n2008-03-04\t156\t666\n2008-03-05\t156\t485\n2008-03-06\t147\t603\n2008-03-07\t159\t566\n2008-03-08\t96\t442\n2008-03-09\t110\t423\n2008-03-10\t153\t671\n2008-03-11\t261\t797\n2008-03-12\t201\t634\n2008-03-13\t213\t581\n2008-03-14\t198\t560\n2008-03-15\t115\t447\n2008-03-16\t107\t606\n2008-03-17\t179\t719\n2008-03-18\t204\t678\n2008-03-19\t210\t630\n2008-03-20\t203\t708\n2008-03-21\t202\t687\n2008-03-22\t118\t491\n2008-03-23\t112\t360\n2008-03-24\t187\t823\n2008-03-25\t236\t865\n2008-03-26\t255\t707\n2008-03-27\t208\t568\n2008-03-28\t185\t566\n2008-03-29\t144\t725\n2008-03-30\t132\t502\n2008-03-31\t226\t821\n2008-04-01\t218\t783\n2008-04-02\t215\t583\n2008-04-03\t193\t722\n2008-04-04\t224\t673\n2008-04-05\t92\t453\n2008-04-06\t130\t472\n2008-04-07\t197\t545\n2008-04-08\t212\t833\n2008-04-09\t223\t687\n2008-04-10\t201\t1032\n2008-04-11\t193\t589\n2008-04-12\t116\t419\n2008-04-13\t106\t402\n2008-04-14\t193\t803\n2008-04-15\t221\t763\n2008-04-16\t206\t704\n2008-04-17\t216\t712\n2008-04-18\t182\t734\n2008-04-19\t85\t313\n2008-04-20\t100\t712\n2008-04-21\t211\t813\n2008-04-22\t238\t738\n2008-04-23\t205\t635\n2008-04-24\t260\t789\n2008-04-25\t221\t658\n2008-04-26\t106\t383\n2008-04-27\t127\t463\n2008-04-28\t176\t840\n2008-04-29\t199\t703\n2008-04-30\t196\t569\n2008-05-01\t226\t913\n2008-05-02\t219\t612\n2008-05-03\t116\t317\n2008-05-04\t111\t490\n2008-05-05\t194\t737\n2008-05-06\t203\t780\n2008-05-07\t226\t833\n2008-05-08\t185\t806\n2008-05-09\t193\t786\n2008-05-10\t98\t351\n2008-05-11\t100\t368\n2008-05-12\t249\t849\n2008-05-13\t234\t816\n2008-05-14\t245\t665\n2008-05-15\t249\t943\n2008-05-16\t240\t716\n2008-05-17\t129\t662\n2008-05-18\t132\t504\n2008-05-19\t208\t542\n2008-05-20\t228\t788\n2008-05-21\t212\t801\n2008-05-22\t212\t746\n2008-05-23\t200\t487\n2008-05-24\t114\t657\n2008-05-25\t123\t438\n2008-05-26\t154\t506\n2008-05-27\t209\t1077\n2008-05-28\t237\t803\n2008-05-29\t266\t841\n2008-05-30\t227\t578\n2008-05-31\t125\t444\n2008-06-01\t143\t592\n2008-06-02\t236\t912\n2008-06-03\t204\t735\n2008-06-04\t230\t840\n2008-06-05\t254\t614\n2008-06-06\t239\t556\n2008-06-07\t114\t229\n2008-06-08\t103\t475\n2008-06-09\t231\t745\n2008-06-10\t270\t780\n2008-06-11\t236\t671\n2008-06-12\t233\t783\n2008-06-13\t189\t490\n2008-06-14\t120\t408\n2008-06-15\t97\t355\n2008-06-16\t188\t801\n2008-06-17\t254\t899\n2008-06-18\t224\t622\n2008-06-19\t249\t649\n2008-06-20\t237\t780\n2008-06-21\t119\t377\n2008-06-22\t105\t429\n2008-06-23\t241\t994\n2008-06-24\t249\t817\n2008-06-25\t227\t914\n2008-06-26\t277\t877\n2008-06-27\t251\t750\n2008-06-28\t113\t385\n2008-06-29\t123\t527\n2008-06-30\t213\t735\n2008-07-01\t249\t886\n2008-07-02\t240\t673\n2008-07-03\t226\t859\n2008-07-04\t200\t613\n2008-07-05\t110\t724\n2008-07-06\t160\t391\n2008-07-07\t259\t918\n2008-07-08\t268\t940\n2008-07-09\t256\t981\n2008-07-10\t308\t778\n2008-07-11\t248\t809\n2008-07-12\t126\t471\n2008-07-13\t152\t367\n2008-07-14\t277\t618\n2008-07-15\t259\t726\n2008-07-16\t231\t558\n2008-07-17\t266\t949\n2008-07-18\t209\t831\n2008-07-19\t117\t716\n2008-07-20\t123\t567\n2008-07-21\t235\t670\n2008-07-22\t252\t746\n2008-07-23\t244\t727\n2008-07-24\t259\t940\n2008-07-25\t267\t769\n2008-07-26\t151\t446\n2008-07-27\t145\t526\n2008-07-28\t255\t1006\n2008-07-29\t275\t1104\n2008-07-30\t273\t927\n2008-07-31\t259\t683\n2008-08-01\t243\t858\n2008-08-02\t143\t398\n2008-08-03\t130\t408\n2008-08-04\t224\t984\n2008-08-05\t256\t805\n2008-08-06\t223\t858\n2008-08-07\t236\t704\n2008-08-08\t230\t820\n2008-08-09\t168\t571\n2008-08-10\t137\t421\n2008-08-11\t209\t581\n2008-08-12\t243\t837\n2008-08-13\t239\t810\n2008-08-14\t246\t672\n2008-08-15\t184\t664\n2008-08-16\t109\t412\n2008-08-17\t106\t559\n2008-08-18\t234\t716\n2008-08-19\t265\t982\n2008-08-20\t261\t890\n2008-08-21\t275\t641\n2008-08-22\t198\t833\n2008-08-23\t134\t287\n2008-08-24\t139\t497\n2008-08-25\t257\t724\n2008-08-26\t314\t585\n2008-08-27\t254\t850\n2008-08-28\t279\t599\n2008-08-29\t221\t701\n2008-08-30\t118\t348\n2008-08-31\t103\t354\n2008-09-01\t173\t492\n2008-09-02\t270\t860\n2008-09-03\t251\t657\n2008-09-04\t262\t733\n2008-09-05\t263\t768\n2008-09-06\t180\t517\n2008-09-07\t141\t603\n2008-09-08\t242\t698\n2008-09-09\t290\t774\n2008-09-10\t255\t605\n2008-09-11\t234\t898\n2008-09-12\t165\t600\n2008-09-13\t133\t469\n2008-09-14\t117\t603\n2008-09-15\t243\t952\n2008-09-16\t258\t935\n2008-09-17\t255\t781\n2008-09-18\t274\t852\n2008-09-19\t227\t522\n2008-09-20\t154\t291\n2008-09-21\t143\t358\n2008-09-22\t302\t902\n2008-09-23\t268\t874\n2008-09-24\t267\t1000\n2008-09-25\t257\t968\n2008-09-26\t250\t751\n2008-09-27\t160\t560\n2008-09-28\t125\t458\n2008-09-29\t286\t920\n2008-09-30\t287\t690\n2008-10-01\t320\t660\n2008-10-02\t259\t821\n2008-10-03\t233\t616\n2008-10-04\t149\t380\n2008-10-05\t145\t479\n2008-10-06\t263\t727\n2008-10-07\t223\t513\n2008-10-08\t274\t770\n2008-10-09\t266\t772\n2008-10-10\t266\t654\n2008-10-11\t168\t416\n2008-10-12\t114\t554\n2008-10-13\t274\t860\n2008-10-14\t273\t657\n2008-10-15\t277\t858\n2008-10-16\t298\t986\n2008-10-17\t265\t577\n2008-10-18\t157\t520\n2008-10-19\t120\t433\n2008-10-20\t240\t710\n2008-10-21\t273\t804\n2008-10-22\t268\t797\n2008-10-23\t288\t815\n2008-10-24\t263\t918\n2008-10-25\t145\t450\n2008-10-26\t130\t549\n2008-10-27\t283\t903\n2008-10-28\t253\t672\n2008-10-29\t245\t970\n2008-10-30\t260\t910\n2008-10-31\t243\t620\n2008-11-01\t134\t467\n2008-11-02\t129\t633\n2008-11-03\t217\t740\n2008-11-04\t258\t944\n2008-11-05\t239\t954\n2008-11-06\t243\t867\n2008-11-07\t241\t583\n2008-11-08\t155\t471\n2008-11-09\t146\t710\n2008-11-10\t274\t1010\n2008-11-11\t276\t902\n2008-11-12\t266\t950\n2008-11-13\t256\t981\n2008-11-14\t254\t978\n2008-11-15\t138\t503\n2008-11-16\t104\t581\n2008-11-17\t227\t1030\n2008-11-18\t273\t979\n2008-11-19\t266\t977\n2008-11-20\t259\t666\n2008-11-21\t272\t964\n2008-11-22\t150\t569\n2008-11-23\t138\t684\n2008-11-24\t269\t1300\n2008-11-25\t290\t876\n2008-11-26\t243\t885\n2008-11-27\t160\t486\n2008-11-28\t146\t648\n2008-11-29\t129\t570\n2008-11-30\t154\t492\n2008-12-01\t246\t1000\n2008-12-02\t292\t952\n2008-12-03\t287\t1052\n2008-12-04\t269\t954\n2008-12-05\t283\t965\n2008-12-06\t146\t677\n2008-12-07\t135\t586\n2008-12-08\t267\t1270\n2008-12-09\t285\t1070\n2008-12-10\t255\t1218\n2008-12-11\t265\t1162\n2008-12-12\t234\t904\n2008-12-13\t137\t492\n2008-12-14\t117\t591\n2008-12-15\t244\t908\n2008-12-16\t272\t1087\n2008-12-17\t236\t875\n2008-12-18\t258\t924\n2008-12-19\t232\t1140\n2008-12-20\t142\t789\n2008-12-21\t93\t594\n2008-12-22\t209\t864\n2008-12-23\t243\t970\n2008-12-24\t189\t778\n2008-12-25\t94\t413\n2008-12-26\t149\t717\n2008-12-27\t135\t721\n2008-12-28\t118\t735\n2008-12-29\t249\t975\n2008-12-30\t248\t994\n2008-12-31\t246\t704\n2009-01-01\t135\t657\n2009-01-02\t201\t876\n2009-01-03\t171\t683\n2009-01-04\t147\t896\n2009-01-05\t308\t1146\n2009-01-06\t303\t944\n2009-01-07\t263\t1384\n2009-01-08\t281\t1330\n2009-01-09\t275\t1294\n2009-01-10\t184\t881\n2009-01-11\t141\t1186\n2009-01-12\t278\t1045\n2009-01-13\t310\t1133\n2009-01-14\t302\t1372\n2009-01-15\t290\t1000\n2009-01-16\t320\t1233\n2009-01-17\t172\t961\n2009-01-18\t153\t903\n2009-01-19\t247\t883\n2009-01-20\t294\t1081\n2009-01-21\t297\t1245\n2009-01-22\t315\t1191\n2009-01-23\t315\t1649\n2009-01-24\t170\t694\n2009-01-25\t154\t1077\n2009-01-26\t238\t1309\n2009-01-27\t346\t1312\n2009-01-28\t314\t1481\n2009-01-29\t368\t1310\n2009-01-30\t308\t1307\n2009-01-31\t177\t919\n2009-02-01\t192\t1211\n2009-02-02\t281\t1180\n2009-02-03\t354\t1478\n2009-02-04\t322\t1380\n2009-02-05\t346\t1696\n2009-02-06\t292\t1067\n2009-02-07\t157\t737\n2009-02-08\t161\t1064\n2009-02-09\t318\t1384\n2009-02-10\t331\t1377\n2009-02-11\t311\t1058\n2009-02-12\t366\t1061\n2009-02-13\t288\t1155\n2009-02-14\t181\t638\n2009-02-15\t142\t793\n2009-02-16\t283\t1018\n2009-02-17\t329\t876\n2009-02-18\t272\t911\n2009-02-19\t325\t1217\n2009-02-20\t291\t1014\n2009-02-21\t152\t546\n2009-02-22\t152\t780\n2009-02-23\t280\t1082\n2009-02-24\t303\t910\n2009-02-25\t318\t1035\n2009-02-26\t299\t1076\n2009-02-27\t250\t793\n2009-02-28\t184\t680\n2009-03-01\t152\t679\n2009-03-02\t298\t1092\n2009-03-03\t326\t1060\n2009-03-04\t331\t856\n2009-03-05\t353\t854\n2009-03-06\t299\t849\n2009-03-07\t143\t480\n2009-03-08\t137\t899\n2009-03-09\t291\t1169\n2009-03-10\t341\t1212\n2009-03-11\t409\t1190\n2009-03-12\t375\t1200\n2009-03-13\t310\t709\n2009-03-14\t173\t902\n2009-03-15\t154\t700\n2009-03-16\t318\t1200\n2009-03-17\t332\t1522\n2009-03-18\t316\t1166\n2009-03-19\t327\t1106\n2009-03-20\t276\t1186\n2009-03-21\t155\t852\n2009-03-22\t140\t717\n2009-03-23\t325\t1114\n2009-03-24\t339\t1370\n2009-03-25\t333\t1183\n2009-03-26\t351\t1140\n2009-03-27\t281\t1178\n2009-03-28\t171\t717\n2009-03-29\t161\t799\n2009-03-30\t328\t1046\n2009-03-31\t331\t1248\n2009-04-01\t318\t1286\n2009-04-02\t287\t1125\n2009-04-03\t300\t1264\n2009-04-04\t163\t768\n2009-04-05\t166\t953\n2009-04-06\t327\t1458\n2009-04-07\t303\t1678\n2009-04-08\t294\t1247\n2009-04-09\t314\t1354\n2009-04-10\t243\t1261\n2009-04-11\t147\t753\n2009-04-12\t142\t1095\n2009-04-13\t280\t1224\n2009-04-14\t319\t1478\n2009-04-15\t347\t1291\n2009-04-16\t322\t1374\n2009-04-17\t313\t1346\n2009-04-18\t177\t803\n2009-04-19\t184\t816\n2009-04-20\t321\t1344\n2009-04-21\t375\t1248\n2009-04-22\t333\t1054\n2009-04-23\t338\t1463\n2009-04-24\t310\t1337\n2009-04-25\t214\t935\n2009-04-26\t167\t786\n2009-04-27\t340\t1415\n2009-04-28\t363\t1422\n2009-04-29\t345\t1358\n2009-04-30\t369\t1331\n2009-05-01\t306\t1161\n2009-05-02\t171\t779\n2009-05-03\t169\t978\n2009-05-04\t351\t1314\n2009-05-05\t355\t1068\n2009-05-06\t339\t1495\n2009-05-07\t356\t1272\n2009-05-08\t322\t1149\n2009-05-09\t197\t907\n2009-05-10\t161\t941\n2009-05-11\t304\t1429\n2009-05-12\t301\t1288\n2009-05-13\t319\t1237\n2009-05-14\t347\t1338\n2009-05-15\t305\t1562\n2009-05-16\t152\t849\n2009-05-17\t142\t1110\n2009-05-18\t336\t1471\n2009-05-19\t352\t1377\n2009-05-20\t362\t1536\n2009-05-21\t361\t1264\n2009-05-22\t286\t1226\n2009-05-23\t199\t712\n2009-05-24\t147\t774\n2009-05-25\t240\t626\n2009-05-26\t352\t1491\n2009-05-27\t318\t1183\n2009-05-28\t355\t1424\n2009-05-29\t335\t1380\n2009-05-30\t209\t876\n2009-05-31\t152\t636\n2009-06-01\t352\t1476\n2009-06-02\t323\t1411\n2009-06-03\t332\t1363\n2009-06-04\t286\t1313\n2009-06-05\t350\t1350\n2009-06-06\t171\t878\n2009-06-07\t167\t956\n2009-06-08\t285\t1308\n2009-06-09\t327\t1632\n2009-06-10\t382\t1316\n2009-06-11\t337\t1456\n2009-06-12\t302\t1230\n2009-06-13\t176\t817\n2009-06-14\t164\t962\n2009-06-15\t296\t1243\n2009-06-16\t336\t1485\n2009-06-17\t341\t1163\n2009-06-18\t337\t1233\n2009-06-19\t283\t1206\n2009-06-20\t160\t763\n2009-06-21\t140\t793\n2009-06-22\t339\t1149\n2009-06-23\t342\t1385\n2009-06-24\t316\t1212\n2009-06-25\t366\t1411\n2009-06-26\t312\t1237\n2009-06-27\t188\t633\n2009-06-28\t157\t583\n2009-06-29\t17\t25\n2009-12-16\t9\t47\n2009-12-17\t456\t1716\n2009-12-18\t428\t1511\n2009-12-19\t204\t989\n2009-12-20\t212\t1111\n2009-12-21\t409\t1714\n2009-12-22\t421\t1685\n2009-12-23\t399\t1446\n2009-12-24\t249\t1165\n2009-12-25\t136\t742\n2009-12-26\t169\t695\n2009-12-27\t172\t1291\n2009-12-28\t336\t1520\n2009-12-29\t338\t1485\n2009-12-30\t358\t1466\n2009-12-31\t296\t1302\n2010-01-01\t198\t1171\n2010-01-02\t227\t970\n2010-01-03\t233\t1237\n2010-01-04\t450\t1600\n2010-01-05\t429\t1795\n2010-01-06\t450\t1697\n2010-01-07\t462\t1700\n2010-01-08\t454\t1867\n2010-01-09\t258\t1304\n2010-01-10\t248\t1516\n2010-01-11\t407\t1777\n2010-01-12\t491\t2163\n2010-01-13\t480\t1755\n2010-01-14\t465\t1906\n2010-01-15\t427\t1661\n2010-01-16\t264\t1236\n2010-01-17\t249\t1109\n2010-01-18\t391\t1460\n2010-01-19\t500\t2173\n2010-01-20\t500\t1862\n2010-01-21\t508\t2026\n2010-01-22\t431\t1602\n2010-01-23\t297\t1343\n2010-01-24\t229\t1140\n2010-01-25\t504\t1941\n2010-01-26\t538\t2189\n2010-01-27\t543\t2319\n2010-01-28\t530\t2222\n2010-01-29\t492\t1983\n2010-01-30\t291\t1173\n2010-01-31\t274\t1595\n2010-02-01\t430\t1899\n2010-02-02\t539\t2250\n2010-02-03\t525\t2005\n2010-02-04\t551\t2179\n2010-02-05\t528\t2455\n2010-02-06\t305\t1301\n2010-02-07\t247\t1282\n2010-02-08\t515\t1995\n2010-02-09\t559\t1920\n2010-02-10\t550\t2196\n2010-02-11\t563\t2077\n2010-02-12\t520\t2394\n2010-02-13\t274\t1282\n2010-02-14\t221\t1406\n2010-02-15\t448\t1758\n2010-02-16\t548\t1956\n2010-02-17\t511\t2002\n2010-02-18\t550\t2174\n2010-02-19\t491\t1924\n2010-02-20\t259\t1040\n2010-02-21\t263\t1449\n2010-02-22\t566\t2066\n2010-02-23\t546\t1986\n2010-02-24\t537\t2144\n2010-02-25\t501\t1695\n2010-02-26\t470\t1993\n2010-02-27\t279\t1274\n2010-02-28\t247\t1231\n2010-03-01\t525\t1970\n2010-03-02\t527\t2000\n2010-03-03\t558\t2316\n2010-03-04\t543\t1947\n2010-03-05\t469\t1892\n2010-03-06\t251\t1317\n2010-03-07\t215\t1571\n2010-03-08\t542\t1989\n2010-03-09\t563\t2026\n2010-03-10\t545\t2177\n2010-03-11\t492\t2258\n2010-03-12\t437\t2141\n2010-03-13\t285\t1347\n2010-03-14\t226\t1349\n2010-03-15\t483\t2401\n2010-03-16\t511\t2326\n2010-03-17\t506\t1907\n2010-03-18\t493\t2276\n2010-03-19\t432\t2142\n2010-03-20\t241\t1307\n2010-03-21\t215\t1381\n2010-03-22\t484\t2287\n2010-03-23\t494\t2286\n2010-03-24\t455\t2286\n2010-03-25\t495\t1880\n2010-03-26\t473\t1822\n2010-03-27\t261\t1191\n2010-03-28\t234\t1149\n2010-03-29\t489\t2057\n2010-03-30\t472\t1922\n2010-03-31\t528\t2220\n2010-04-01\t527\t1650\n2010-04-02\t372\t1802\n2010-04-03\t247\t1243\n2010-04-04\t242\t1271\n2010-04-05\t414\t1797\n2010-04-06\t521\t2069\n2010-04-07\t476\t2316\n2010-04-08\t471\t2255\n2010-04-09\t441\t1999\n2010-04-10\t297\t1480\n2010-04-11\t253\t1657\n2010-04-12\t543\t2129\n2010-04-13\t498\t2253\n2010-04-14\t519\t2099\n2010-04-15\t495\t2294\n2010-04-16\t524\t2409\n2010-04-17\t299\t1238\n2010-04-18\t269\t1378\n2010-04-19\t493\t1943\n2010-04-20\t553\t2275\n2010-04-21\t535\t1910\n2010-04-22\t522\t2664\n2010-04-23\t546\t2323\n2010-04-24\t315\t1480\n2010-04-25\t290\t1613\n2010-04-26\t554\t2372\n2010-04-27\t606\t2830\n2010-04-28\t577\t2245\n2010-04-29\t582\t2950\n2010-04-30\t494\t2379\n2010-05-01\t285\t1456\n2010-05-02\t272\t1561\n2010-05-03\t517\t2412\n2010-05-04\t570\t2694\n2010-05-05\t595\t2559\n2010-05-06\t562\t2384\n2010-05-07\t497\t2215\n2010-05-08\t306\t1669\n2010-05-09\t296\t1663\n2010-05-10\t561\t2428\n2010-05-11\t586\t2691\n2010-05-12\t581\t2409\n2010-05-13\t585\t2507\n2010-05-14\t527\t2351\n2010-05-15\t303\t1842\n2010-05-16\t271\t1430\n2010-05-17\t532\t2286\n2010-05-18\t603\t2871\n2010-05-19\t655\t2489\n2010-05-20\t555\t2294\n2010-05-21\t526\t2965\n2010-05-22\t302\t1432\n2010-05-23\t286\t1603\n2010-05-24\t485\t2068\n2010-05-25\t578\t2501\n2010-05-26\t543\t2464\n2010-05-27\t511\t2372\n2010-05-28\t475\t2306\n2010-05-29\t269\t1053\n2010-05-30\t292\t1409\n2010-05-31\t391\t2167\n2010-06-01\t523\t2020\n2010-06-02\t596\t2763\n2010-06-03\t537\t2354\n2010-06-04\t542\t2187\n2010-06-05\t288\t1248\n2010-06-06\t268\t1475\n2010-06-07\t518\t2378\n2010-06-08\t553\t2512\n2010-06-09\t552\t2236\n2010-06-10\t591\t2932\n2010-06-11\t493\t2267\n2010-06-12\t254\t1021\n2010-06-13\t260\t1474\n2010-06-14\t508\t2545\n2010-06-15\t512\t2142\n2010-06-16\t581\t2725\n2010-06-17\t586\t2671\n2010-06-18\t498\t2209\n2010-06-19\t243\t1546\n2010-06-20\t270\t1741\n2010-06-21\t426\t2378\n2010-06-22\t503\t2555\n2010-06-23\t545\t2609\n2010-06-24\t453\t1944\n2010-06-25\t511\t2685\n2010-06-26\t277\t1347\n2010-06-27\t275\t2013\n2010-06-28\t533\t2620\n2010-06-29\t566\t2694\n2010-06-30\t551\t2403\n2010-07-01\t546\t2630\n2010-07-02\t442\t2457\n2010-07-03\t261\t1700\n2010-07-04\t236\t1416\n2010-07-05\t430\t2088\n2010-07-06\t521\t2759\n2010-07-07\t458\t2566\n2010-07-08\t572\t2673\n2010-07-09\t501\t2671\n2010-07-10\t321\t1464\n2010-07-11\t251\t1330\n2010-07-12\t527\t3029\n2010-07-13\t539\t2551\n2010-07-14\t595\t2687\n2010-07-15\t568\t2512\n2010-07-16\t516\t2448\n2010-07-17\t305\t1663\n2010-07-18\t265\t1954\n2010-07-19\t567\t2915\n2010-07-20\t555\t2424\n2010-07-21\t550\t2371\n2010-07-22\t548\t2279\n2010-07-23\t500\t2146\n2010-07-24\t295\t1433\n2010-07-25\t250\t1753\n2010-07-26\t551\t2662\n2010-07-27\t584\t2387\n2010-07-28\t566\t2226\n2010-07-29\t584\t3101\n2010-07-30\t529\t2332\n2010-07-31\t290\t1150\n2010-08-01\t291\t1816\n2010-08-02\t528\t2836\n2010-08-03\t561\t2628\n\n\u003cfont color\u003dred\u003eResults are limited by 1000.\u003c/font\u003e"
+      },
+      "dateCreated": "Nov 20, 2015 8:31:43 AM",
+      "dateStarted": "Nov 27, 2015 5:07:38 AM",
+      "dateFinished": "Nov 27, 2015 5:08:01 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nIn our second attempt below, the results are grouped by month. We now get nice, continuous trend lines that tell a story. It looks like Hacker News hit its peak in story volume around November 2011 and has maintained that volume since. Comment activity on Hacker News hit a peak in March 2014 and has come down a little since reaching that peak. \n\n\u003cbr\u003e\n\nWe also now have the ability to input a date range through parameters with the variables \u0027begin_date\u0027 and \u0027end_date\u0027. You can do this with this syntax: \"$\\{variable\u003d\u0026lt;default\u0026gt;\\}\". \n\n\u003cbr\u003e\n\nFinally, with this chart, we\u0027ve also changed the chart type to a continuous area plot instead of using bar charts. This shows the trends more clearly and helps us clearly differentiate between the magnitude of stories vs. comments. ",
+      "dateUpdated": "Dec 1, 2015 8:53:26 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448602616486_767921179",
+      "id": "20151127-053656_561408707",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eIn our second attempt below, the results are grouped by month. We now get nice, continuous trend lines that tell a story. It looks like Hacker News hit its peak in story volume around November 2011 and has maintained that volume since. Comment activity on Hacker News hit a peak in March 2014 and has come down a little since reaching that peak.\u003c/p\u003e\n\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\n\u003cp\u003eWe also now have the ability to input a date range through parameters with the variables \u0027begin_date\u0027 and \u0027end_date\u0027. You can do this with this syntax: \u0026ldquo;${variable\u003d\u0026lt;default\u0026gt;}\u0026ldquo;.\u003c/p\u003e\n\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\n\u003cp\u003eFinally, with this chart, we\u0027ve also changed the chart type to a continuous area plot instead of using bar charts. This shows the trends more clearly and helps us clearly differentiate between the magnitude of stories vs. comments.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Nov 27, 2015 5:36:56 AM",
+      "dateStarted": "Dec 1, 2015 8:48:43 AM",
+      "dateFinished": "Dec 1, 2015 8:48:43 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Number Of Stories And Comments, 2nd Version",
+      "text": "%sql\nselect\nto_date(concat(YEAR,\u0027-\u0027,MONTH,\u0027-01\u0027)) as DATE,\nNUM_STORIES,\nNUM_COMMENTS\n\nfrom ( \nselect\nyear(created_at) as YEAR,\nmonth(created_at) as MONTH,\ncount(id) as NUM_STORIES,\nsum(num_comments) as NUM_COMMENTS\n\nfrom hacker_news.stories\nwhere to_date(created_at) between \u0027${begin_date\u003d2006-01-01}\u0027 and \u0027${end_date\u003d2015-12-31}\u0027\n\ngroup by\nyear(created_at),\nmonth(created_at)\n\norder by\nYEAR,\nMONTH\n) temp\n\ngroup by\nto_date(concat(YEAR,\u0027-\u0027,MONTH,\u0027-01\u0027)),\nNUM_STORIES,\nNUM_COMMENTS\n\norder by \nDATE",
+      "dateUpdated": "Dec 3, 2015 6:07:47 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "stackedAreaChart",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            },
+            {
+              "name": "NUM_COMMENTS",
+              "index": 2.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {
+          "begin_date": "2014-01-01",
+          "end_date": "2015-12-31"
+        },
+        "forms": {
+          "end_date": {
+            "name": "end_date",
+            "defaultValue": "2015-12-31",
+            "hidden": false
+          },
+          "begin_date": {
+            "name": "begin_date",
+            "defaultValue": "2006-01-01",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1448008522651_-800747716",
+      "id": "20151120-083522_1987587790",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "DATE\tNUM_STORIES\tNUM_COMMENTS\n2014-01-01\t22600\t134513\n2014-02-01\t20955\t130580\n2014-03-01\t23323\t148251\n2014-04-01\t21858\t140027\n2014-05-01\t19687\t114279\n2014-06-01\t18803\t110116\n2014-07-01\t20421\t119376\n2014-08-01\t19094\t105670\n2014-09-01\t20328\t112906\n2014-10-01\t21439\t119837\n2014-11-01\t19470\t111676\n2014-12-01\t19234\t115958\n2015-01-01\t21532\t122236\n2015-02-01\t20414\t110994\n2015-03-01\t23237\t137747\n2015-04-01\t15254\t87394\n"
+      },
+      "dateCreated": "Nov 20, 2015 8:35:22 AM",
+      "dateStarted": "Dec 3, 2015 6:07:47 PM",
+      "dateFinished": "Dec 3, 2015 6:08:01 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nAnother popular charting option is the pie chart. Here, we show how many the distribution of points given to stories. The majority of stories receive less than 2 points, meaning they aren\u0027t likely to show up at the top of Hacker News where the more popular stories are. ",
+      "dateUpdated": "Dec 1, 2015 9:30:06 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": true,
+        "title": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448960015733_-1562927445",
+      "id": "20151201-085335_1656637293",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eAnother popular charting option is the pie chart. Here, we show how many the distribution of points given to stories. The majority of stories receive less than 2 points, meaning they aren\u0027t likely to show up at the top of Hacker News where the more popular stories are.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Dec 1, 2015 8:53:35 AM",
+      "dateStarted": "Dec 1, 2015 9:14:26 AM",
+      "dateFinished": "Dec 1, 2015 9:14:26 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Distribution of Points for stories",
+      "text": "%sql\nselect\nBUCKET,\nNUM_STORIES\n\nfrom (\nselect\n\u0027Less than 2\u0027 as BUCKET,\ncount(id) as NUM_STORIES\nfrom hacker_news.stories\nwhere points \u003c 2\n\nunion all\n\nselect\n\u00272 to 10\u0027 as BUCKET,\ncount(id) as NUM_STORIES\nfrom hacker_news.stories\nwhere points \u003e\u003d 2\nand   points \u003c\u003d 10\n\nunion all\n\nselect\n\u002711 to 100\u0027 as BUCKET,\ncount(id) as NUM_STORIES\nfrom hacker_news.stories\nwhere points \u003e 10\nand   points \u003c 100\n\nunion all\n\nselect\n\u0027100+\u0027 as BUCKET,\ncount(id) as NUM_STORIES\nfrom hacker_news.stories\nwhere points \u003e\u003d 100\n) temp\n\ngroup by \nBUCKET,\nNUM_STORIES",
+      "dateUpdated": "Dec 1, 2015 9:29:42 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "pieChart",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "BUCKET",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "BUCKET",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "NUM_STORIES",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448960533364_1286676675",
+      "id": "20151201-090213_1969520221",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "BUCKET\tNUM_STORIES\n11 to 100\t150804\n2 to 10\t576178\nLess than 2\t789988\n100+\t36964\n"
+      },
+      "dateCreated": "Dec 1, 2015 9:02:13 AM",
+      "dateStarted": "Dec 1, 2015 9:12:04 AM",
+      "dateFinished": "Dec 1, 2015 9:12:12 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nThe final charting tool we\u0027ll show is Groups. For the chart below, we\u0027ve selected \u0027DOMAIN\u0027 in the Groups section of the chart\u0027s settings. This lets us see the relative contribution to the total number of stories by the five websites that have had the most stories appearing on Hacker News. ",
+      "dateUpdated": "Dec 1, 2015 9:32:27 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448962217705_-441088905",
+      "id": "20151201-093017_1852889128",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eThe final charting tool we\u0027ll show is Groups. For the chart below, we\u0027ve selected \u0027DOMAIN\u0027 in the Groups section of the chart\u0027s settings. This lets us see the relative contribution to the total number of stories by the five websites that have had the most stories appearing on Hacker News.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Dec 1, 2015 9:30:17 AM",
+      "dateStarted": "Dec 1, 2015 9:32:25 AM",
+      "dateFinished": "Dec 1, 2015 9:32:25 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Top 5 Domains That Generated The Most Comments",
+      "text": "%sql\nselect\nto_date(concat(YEAR,\u0027-\u0027,MONTH,\u0027-01\u0027)) as DATE,\nDOMAIN,\nNUM_COMMENTS\n\nfrom (\nselect\nyear(s.created_at) as YEAR,\nmonth(s.created_at) as MONTH,\ns.url_hostname as DOMAIN,\nsum(s.num_comments) as NUM_COMMENTS\n\nfrom hacker_news.stories s\n\nright join (\nselect\nurl_hostname as DOMAIN,\nsum(num_comments) as NUM_COMMENTS\nfrom hacker_news.stories\nwhere url_hostname !\u003d \u0027\"\"\u0027\ngroup by url_hostname\norder by NUM_COMMENTS desc\nlimit 5\n) top_five_domains\n  on top_five_domains.DOMAIN \u003d s.url_hostname\n\ngroup by\nyear(s.created_at),\nmonth(s.created_at),\ns.url_hostname\n) temp\n\ngroup by \nto_date(concat(YEAR,\u0027-\u0027,MONTH,\u0027-01\u0027)),\nDOMAIN,\nNUM_COMMENTS\n\norder by DATE\n",
+      "dateUpdated": "Dec 1, 2015 9:31:32 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "stackedAreaChart",
+          "height": 300.0,
+          "optionOpen": true,
+          "keys": [
+            {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "NUM_COMMENTS",
+              "index": 2.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [
+            {
+              "name": "DOMAIN",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "scatter": {
+            "xAxis": {
+              "name": "DATE",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "DOMAIN",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "title": true,
+        "editorMode": "ace/mode/sql",
+        "editorHide": false,
+        "lineNumbers": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448012349668_254351952",
+      "id": "20151120-093909_1499318180",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "DATE\tDOMAIN\tNUM_COMMENTS\n2006-10-01\tnytimes.com\t11\n2006-10-01\twired.com\t1\n2006-10-01\ttechcrunch.com\t11\n2007-02-01\tarstechnica.com\t1\n2007-02-01\ttechcrunch.com\t39\n2007-02-01\tnytimes.com\t15\n2007-03-01\tarstechnica.com\t9\n2007-03-01\twired.com\t18\n2007-03-01\ttechcrunch.com\t159\n2007-03-01\tnytimes.com\t31\n2007-04-01\tnytimes.com\t23\n2007-04-01\tarstechnica.com\t9\n2007-04-01\twired.com\t6\n2007-04-01\ttechcrunch.com\t149\n2007-05-01\twired.com\t7\n2007-05-01\tnytimes.com\t70\n2007-05-01\ttechcrunch.com\t321\n2007-05-01\tarstechnica.com\t1\n2007-06-01\tnytimes.com\t111\n2007-06-01\ttechcrunch.com\t62\n2007-06-01\twired.com\t4\n2007-06-01\tarstechnica.com\t0\n2007-07-01\tnytimes.com\t59\n2007-07-01\tarstechnica.com\t9\n2007-07-01\ttechcrunch.com\t168\n2007-07-01\twired.com\t8\n2007-08-01\ttechcrunch.com\t190\n2007-08-01\tarstechnica.com\t14\n2007-08-01\twired.com\t15\n2007-08-01\tnytimes.com\t176\n2007-09-01\tnytimes.com\t312\n2007-09-01\twired.com\t39\n2007-09-01\tarstechnica.com\t7\n2007-09-01\ttechcrunch.com\t184\n2007-10-01\ttechcrunch.com\t85\n2007-10-01\tnytimes.com\t99\n2007-10-01\tarstechnica.com\t26\n2007-10-01\twired.com\t41\n2008-01-01\ttechcrunch.com\t107\n2008-01-01\twired.com\t91\n2008-01-01\tnytimes.com\t120\n2008-01-01\tarstechnica.com\t34\n2008-02-01\tnytimes.com\t323\n2008-02-01\ttechcrunch.com\t412\n2008-02-01\tarstechnica.com\t50\n2008-02-01\twired.com\t142\n2008-03-01\tnytimes.com\t513\n2008-03-01\tarstechnica.com\t29\n2008-03-01\ttechcrunch.com\t747\n2008-03-01\tgithub.com\t1\n2008-03-01\twired.com\t184\n2008-04-01\ttechcrunch.com\t772\n2008-04-01\tnytimes.com\t208\n2008-04-01\tarstechnica.com\t22\n2008-04-01\tgithub.com\t35\n2008-04-01\twired.com\t102\n2008-05-01\tnytimes.com\t290\n2008-05-01\ttechcrunch.com\t668\n2008-05-01\tarstechnica.com\t34\n2008-05-01\tgithub.com\t0\n2008-05-01\twired.com\t40\n2008-06-01\twired.com\t117\n2008-06-01\ttechcrunch.com\t518\n2008-06-01\tarstechnica.com\t104\n2008-06-01\tnytimes.com\t426\n2008-06-01\tgithub.com\t11\n2008-07-01\ttechcrunch.com\t1029\n2008-07-01\tnytimes.com\t784\n2008-07-01\tarstechnica.com\t129\n2008-07-01\twired.com\t18\n2008-07-01\tgithub.com\t37\n2008-08-01\tnytimes.com\t544\n2008-08-01\ttechcrunch.com\t1003\n2008-08-01\twired.com\t110\n2008-08-01\tarstechnica.com\t133\n2008-08-01\tgithub.com\t2\n2008-09-01\twired.com\t60\n2008-09-01\tgithub.com\t18\n2008-09-01\tnytimes.com\t348\n2008-09-01\tarstechnica.com\t174\n2008-09-01\ttechcrunch.com\t688\n2008-10-01\tgithub.com\t26\n2008-10-01\twired.com\t115\n2008-10-01\ttechcrunch.com\t617\n2008-10-01\tnytimes.com\t505\n2008-10-01\tarstechnica.com\t125\n2008-11-01\twired.com\t68\n2008-11-01\tarstechnica.com\t29\n2008-11-01\ttechcrunch.com\t681\n2008-11-01\tgithub.com\t23\n2008-11-01\tnytimes.com\t889\n2008-12-01\ttechcrunch.com\t695\n2008-12-01\tnytimes.com\t654\n2008-12-01\twired.com\t30\n2008-12-01\tgithub.com\t76\n2008-12-01\tarstechnica.com\t79\n2009-01-01\twired.com\t144\n2009-01-01\ttechcrunch.com\t1156\n2009-01-01\tnytimes.com\t917\n2009-01-01\tgithub.com\t168\n2009-01-01\tarstechnica.com\t163\n2009-02-01\twired.com\t58\n2009-02-01\tgithub.com\t175\n2009-02-01\tarstechnica.com\t108\n2009-02-01\ttechcrunch.com\t549\n2009-02-01\tnytimes.com\t1033\n2009-03-01\ttechcrunch.com\t1124\n2009-03-01\tgithub.com\t90\n2009-03-01\tnytimes.com\t644\n2009-03-01\tarstechnica.com\t180\n2009-03-01\twired.com\t158\n2009-04-01\tnytimes.com\t979\n2009-04-01\twired.com\t96\n2009-04-01\ttechcrunch.com\t892\n2009-04-01\tarstechnica.com\t205\n2009-04-01\tgithub.com\t362\n2009-05-01\ttechcrunch.com\t1117\n2009-05-01\tgithub.com\t99\n2009-05-01\tarstechnica.com\t184\n2009-05-01\tnytimes.com\t1072\n2009-05-01\twired.com\t448\n2009-06-01\twired.com\t367\n2009-06-01\tarstechnica.com\t191\n2009-06-01\tnytimes.com\t814\n2009-06-01\ttechcrunch.com\t882\n2009-06-01\tgithub.com\t221\n2009-12-01\ttechcrunch.com\t637\n2009-12-01\tnytimes.com\t412\n2009-12-01\tgithub.com\t63\n2009-12-01\twired.com\t430\n2009-12-01\tarstechnica.com\t133\n2010-01-01\tarstechnica.com\t312\n2010-01-01\tnytimes.com\t903\n2010-01-01\tgithub.com\t291\n2010-01-01\twired.com\t984\n2010-01-01\ttechcrunch.com\t723\n2010-02-01\tnytimes.com\t1150\n2010-02-01\ttechcrunch.com\t1159\n2010-02-01\twired.com\t432\n2010-02-01\tgithub.com\t163\n2010-02-01\tarstechnica.com\t301\n2010-03-01\twired.com\t521\n2010-03-01\tnytimes.com\t803\n2010-03-01\tgithub.com\t254\n2010-03-01\ttechcrunch.com\t817\n2010-03-01\tarstechnica.com\t759\n2010-04-01\twired.com\t639\n2010-04-01\ttechcrunch.com\t1464\n2010-04-01\tarstechnica.com\t304\n2010-04-01\tgithub.com\t211\n2010-04-01\tnytimes.com\t1281\n2010-05-01\ttechcrunch.com\t1763\n2010-05-01\twired.com\t572\n2010-05-01\tnytimes.com\t1083\n2010-05-01\tgithub.com\t150\n2010-05-01\tarstechnica.com\t427\n2010-06-01\tnytimes.com\t1319\n2010-06-01\tgithub.com\t350\n2010-06-01\tarstechnica.com\t398\n2010-06-01\twired.com\t609\n2010-06-01\ttechcrunch.com\t1272\n2010-07-01\tgithub.com\t279\n2010-07-01\ttechcrunch.com\t1463\n2010-07-01\tarstechnica.com\t465\n2010-07-01\twired.com\t320\n2010-07-01\tnytimes.com\t1350\n2010-08-01\tgithub.com\t350\n2010-08-01\tarstechnica.com\t543\n2010-08-01\tnytimes.com\t1559\n2010-08-01\ttechcrunch.com\t2570\n2010-08-01\twired.com\t505\n2010-09-01\ttechcrunch.com\t3399\n2010-09-01\tnytimes.com\t1381\n2010-09-01\twired.com\t648\n2010-09-01\tarstechnica.com\t958\n2010-09-01\tgithub.com\t229\n2010-10-01\tarstechnica.com\t682\n2010-10-01\tgithub.com\t290\n2010-10-01\tnytimes.com\t1014\n2010-10-01\twired.com\t650\n2010-10-01\ttechcrunch.com\t2701\n2010-11-01\twired.com\t479\n2010-11-01\tarstechnica.com\t445\n2010-11-01\tnytimes.com\t1847\n2010-11-01\tgithub.com\t661\n2010-11-01\ttechcrunch.com\t2662\n2010-12-01\tgithub.com\t940\n2010-12-01\tnytimes.com\t1085\n2010-12-01\ttechcrunch.com\t2299\n2010-12-01\tarstechnica.com\t570\n2010-12-01\twired.com\t926\n2011-01-01\tnytimes.com\t1225\n2011-01-01\twired.com\t613\n2011-01-01\ttechcrunch.com\t2886\n2011-01-01\tarstechnica.com\t773\n2011-01-01\tgithub.com\t535\n2011-02-01\ttechcrunch.com\t3832\n2011-02-01\twired.com\t555\n2011-02-01\tnytimes.com\t910\n2011-02-01\tarstechnica.com\t1615\n2011-02-01\tgithub.com\t628\n2011-03-01\tnytimes.com\t1558\n2011-03-01\ttechcrunch.com\t3479\n2011-03-01\tarstechnica.com\t1075\n2011-03-01\tgithub.com\t800\n2011-03-01\twired.com\t446\n2011-04-01\ttechcrunch.com\t1860\n2011-04-01\tnytimes.com\t557\n2011-04-01\twired.com\t620\n2011-04-01\tgithub.com\t953\n2011-04-01\tarstechnica.com\t1308\n2011-05-01\twired.com\t812\n2011-05-01\tgithub.com\t644\n2011-05-01\ttechcrunch.com\t2768\n2011-05-01\tarstechnica.com\t998\n2011-05-01\tnytimes.com\t1699\n2011-06-01\tnytimes.com\t806\n2011-06-01\tarstechnica.com\t1254\n2011-06-01\ttechcrunch.com\t2264\n2011-06-01\tgithub.com\t1184\n2011-06-01\twired.com\t414\n2011-07-01\ttechcrunch.com\t3078\n2011-07-01\tnytimes.com\t1608\n2011-07-01\twired.com\t953\n2011-07-01\tarstechnica.com\t822\n2011-07-01\tgithub.com\t585\n2011-08-01\tnytimes.com\t950\n2011-08-01\tarstechnica.com\t896\n2011-08-01\ttechcrunch.com\t3735\n2011-08-01\twired.com\t243\n2011-08-01\tgithub.com\t635\n2011-09-01\tnytimes.com\t1210\n2011-09-01\tarstechnica.com\t594\n2011-09-01\ttechcrunch.com\t2003\n2011-09-01\twired.com\t473\n2011-09-01\tgithub.com\t1283\n2011-10-01\tarstechnica.com\t986\n2011-10-01\tnytimes.com\t1785\n2011-10-01\tgithub.com\t1097\n2011-10-01\ttechcrunch.com\t2241\n2011-10-01\twired.com\t426\n2011-11-01\tgithub.com\t1458\n2011-11-01\twired.com\t819\n2011-11-01\ttechcrunch.com\t1750\n2011-11-01\tnytimes.com\t1577\n2011-11-01\tarstechnica.com\t1257\n2011-12-01\ttechcrunch.com\t1832\n2011-12-01\twired.com\t430\n2011-12-01\tnytimes.com\t763\n2011-12-01\tarstechnica.com\t448\n2011-12-01\tgithub.com\t1416\n2012-01-01\tarstechnica.com\t1212\n2012-01-01\tnytimes.com\t2226\n2012-01-01\tgithub.com\t1412\n2012-01-01\ttechcrunch.com\t1498\n2012-01-01\twired.com\t524\n2012-02-01\tgithub.com\t1124\n2012-02-01\ttechcrunch.com\t1085\n2012-02-01\tarstechnica.com\t1232\n2012-02-01\tnytimes.com\t857\n2012-02-01\twired.com\t564\n2012-03-01\twired.com\t1159\n2012-03-01\ttechcrunch.com\t1758\n2012-03-01\tgithub.com\t1747\n2012-03-01\tarstechnica.com\t1256\n2012-03-01\tnytimes.com\t1508\n2012-04-01\tnytimes.com\t1426\n2012-04-01\twired.com\t885\n2012-04-01\tarstechnica.com\t1330\n2012-04-01\tgithub.com\t2566\n2012-04-01\ttechcrunch.com\t1752\n2012-05-01\tgithub.com\t1972\n2012-05-01\tnytimes.com\t1477\n2012-05-01\ttechcrunch.com\t1349\n2012-05-01\twired.com\t748\n2012-05-01\tarstechnica.com\t1243\n2012-06-01\twired.com\t807\n2012-06-01\tarstechnica.com\t2770\n2012-06-01\ttechcrunch.com\t1296\n2012-06-01\tnytimes.com\t1418\n2012-06-01\tgithub.com\t1101\n2012-07-01\tarstechnica.com\t1718\n2012-07-01\ttechcrunch.com\t2968\n2012-07-01\twired.com\t976\n2012-07-01\tnytimes.com\t2402\n2012-07-01\tgithub.com\t1803\n2012-08-01\tgithub.com\t2108\n2012-08-01\tarstechnica.com\t2053\n2012-08-01\twired.com\t1056\n2012-08-01\ttechcrunch.com\t4163\n2012-08-01\tnytimes.com\t1038\n2012-09-01\tnytimes.com\t1661\n2012-09-01\ttechcrunch.com\t2643\n2012-09-01\tgithub.com\t1874\n2012-09-01\tarstechnica.com\t1236\n2012-09-01\twired.com\t883\n2012-10-01\ttechcrunch.com\t2207\n2012-10-01\tnytimes.com\t1521\n2012-10-01\tgithub.com\t1466\n2012-10-01\twired.com\t1353\n2012-10-01\tarstechnica.com\t1730\n2012-11-01\twired.com\t1943\n2012-11-01\tgithub.com\t1095\n2012-11-01\ttechcrunch.com\t1816\n2012-11-01\tnytimes.com\t2214\n2012-11-01\tarstechnica.com\t3040\n2012-12-01\tgithub.com\t2146\n2012-12-01\ttechcrunch.com\t2187\n2012-12-01\tnytimes.com\t1480\n2012-12-01\tarstechnica.com\t1318\n2012-12-01\twired.com\t1235\n2013-01-01\tgithub.com\t1789\n2013-01-01\tarstechnica.com\t1792\n2013-01-01\tnytimes.com\t1717\n2013-01-01\twired.com\t931\n2013-01-01\ttechcrunch.com\t2206\n2013-02-01\tarstechnica.com\t2045\n2013-02-01\twired.com\t1338\n2013-02-01\ttechcrunch.com\t2207\n2013-02-01\tnytimes.com\t2021\n2013-02-01\tgithub.com\t1843\n2013-03-01\tarstechnica.com\t1361\n2013-03-01\ttechcrunch.com\t2683\n2013-03-01\tnytimes.com\t2137\n2013-03-01\twired.com\t1342\n2013-03-01\tgithub.com\t3646\n2013-04-01\tarstechnica.com\t2419\n2013-04-01\tnytimes.com\t2082\n2013-04-01\tgithub.com\t2376\n2013-04-01\twired.com\t520\n2013-04-01\ttechcrunch.com\t2357\n2013-05-01\tarstechnica.com\t2250\n2013-05-01\twired.com\t1219\n2013-05-01\ttechcrunch.com\t1784\n2013-05-01\tnytimes.com\t2280\n2013-05-01\tgithub.com\t2341\n2013-06-01\ttechcrunch.com\t1678\n2013-06-01\tnytimes.com\t3089\n2013-06-01\tarstechnica.com\t1438\n2013-06-01\tgithub.com\t1700\n2013-06-01\twired.com\t1056\n2013-07-01\tgithub.com\t2264\n2013-07-01\tnytimes.com\t3506\n2013-07-01\tarstechnica.com\t1166\n2013-07-01\ttechcrunch.com\t2214\n2013-07-01\twired.com\t1316\n2013-08-01\twired.com\t1832\n2013-08-01\tnytimes.com\t1723\n2013-08-01\ttechcrunch.com\t2780\n2013-08-01\tgithub.com\t1970\n2013-08-01\tarstechnica.com\t1077\n2013-09-01\twired.com\t1912\n2013-09-01\tgithub.com\t2504\n2013-09-01\ttechcrunch.com\t2520\n2013-09-01\tarstechnica.com\t2962\n2013-09-01\tnytimes.com\t2316\n2013-10-01\twired.com\t1196\n2013-10-01\tnytimes.com\t2191\n2013-10-01\ttechcrunch.com\t1877\n2013-10-01\tgithub.com\t2734\n2013-10-01\tarstechnica.com\t3040\n2013-11-01\ttechcrunch.com\t1570\n2013-11-01\twired.com\t1590\n2013-11-01\tgithub.com\t2751\n2013-11-01\tnytimes.com\t2086\n2013-11-01\tarstechnica.com\t2902\n2013-12-01\twired.com\t1092\n2013-12-01\tgithub.com\t3000\n2013-12-01\tnytimes.com\t2708\n2013-12-01\ttechcrunch.com\t1666\n2013-12-01\tarstechnica.com\t2342\n2014-01-01\tnytimes.com\t3505\n2014-01-01\tarstechnica.com\t2031\n2014-01-01\twired.com\t2051\n2014-01-01\ttechcrunch.com\t2023\n2014-01-01\tgithub.com\t2947\n2014-02-01\twired.com\t670\n2014-02-01\tgithub.com\t3587\n2014-02-01\tnytimes.com\t1871\n2014-02-01\ttechcrunch.com\t3634\n2014-02-01\tarstechnica.com\t1555\n2014-03-01\tnytimes.com\t2634\n2014-03-01\tgithub.com\t2751\n2014-03-01\twired.com\t912\n2014-03-01\ttechcrunch.com\t5046\n2014-03-01\tarstechnica.com\t2125\n2014-04-01\ttechcrunch.com\t3353\n2014-04-01\tnytimes.com\t2569\n2014-04-01\tarstechnica.com\t383\n2014-04-01\twired.com\t1589\n2014-04-01\tgithub.com\t3723\n2014-05-01\twired.com\t1389\n2014-05-01\tgithub.com\t3046\n2014-05-01\ttechcrunch.com\t2002\n2014-05-01\tnytimes.com\t3259\n2014-05-01\tarstechnica.com\t494\n2014-06-01\tgithub.com\t2487\n2014-06-01\ttechcrunch.com\t1499\n2014-06-01\tarstechnica.com\t740\n2014-06-01\twired.com\t1384\n2014-06-01\tnytimes.com\t2291\n2014-07-01\tnytimes.com\t2318\n2014-07-01\tgithub.com\t4113\n2014-07-01\ttechcrunch.com\t3028\n2014-07-01\tarstechnica.com\t666\n2014-07-01\twired.com\t1266\n2014-08-01\ttechcrunch.com\t2413\n2014-08-01\tgithub.com\t2981\n2014-08-01\tnytimes.com\t4607\n2014-08-01\tarstechnica.com\t831\n2014-08-01\twired.com\t1979\n2014-09-01\ttechcrunch.com\t2416\n2014-09-01\tnytimes.com\t3842\n2014-09-01\tarstechnica.com\t856\n2014-09-01\twired.com\t2214\n2014-09-01\tgithub.com\t3250\n2014-10-01\twired.com\t2757\n2014-10-01\ttechcrunch.com\t2893\n2014-10-01\tarstechnica.com\t496\n2014-10-01\tnytimes.com\t3808\n2014-10-01\tgithub.com\t3697\n2014-11-01\ttechcrunch.com\t1607\n2014-11-01\tarstechnica.com\t625\n2014-11-01\tnytimes.com\t2873\n2014-11-01\tgithub.com\t3540\n2014-11-01\twired.com\t1547\n2014-12-01\twired.com\t2472\n2014-12-01\tgithub.com\t4715\n2014-12-01\ttechcrunch.com\t1607\n2014-12-01\tnytimes.com\t4621\n2014-12-01\tarstechnica.com\t317\n2015-01-01\tnytimes.com\t3461\n2015-01-01\twired.com\t1493\n2015-01-01\ttechcrunch.com\t2577\n2015-01-01\tgithub.com\t4081\n2015-01-01\tarstechnica.com\t834\n2015-02-01\twired.com\t2221\n2015-02-01\ttechcrunch.com\t2404\n2015-02-01\tgithub.com\t3286\n2015-02-01\tnytimes.com\t3350\n2015-02-01\tarstechnica.com\t1060\n2015-03-01\tgithub.com\t4346\n2015-03-01\twired.com\t1905\n2015-03-01\tarstechnica.com\t1364\n2015-03-01\tnytimes.com\t3512\n2015-03-01\ttechcrunch.com\t3509\n2015-04-01\tnytimes.com\t4150\n2015-04-01\tgithub.com\t3119\n2015-04-01\tarstechnica.com\t481\n2015-04-01\twired.com\t1809\n2015-04-01\ttechcrunch.com\t1623\n"
+      },
+      "dateCreated": "Nov 20, 2015 9:39:09 AM",
+      "dateStarted": "Dec 1, 2015 9:28:15 AM",
+      "dateFinished": "Dec 1, 2015 9:28:39 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nFinally, we have below a rough approximation of search through all of Hacker News\u0027 comments. Again, we utilized a parameter, so the search can be customized to the keyword. ",
+      "dateUpdated": "Dec 1, 2015 9:39:09 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448962378110_1769756540",
+      "id": "20151201-093258_54728091",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eFinally, we have below a rough approximation of search through all of Hacker News\u0027 comments. Again, we utilized a parameter, so the search can be customized to the keyword.\u003c/p\u003e\n"
+      },
+      "dateCreated": "Dec 1, 2015 9:32:58 AM",
+      "dateStarted": "Dec 1, 2015 9:39:07 AM",
+      "dateFinished": "Dec 1, 2015 9:39:07 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Hacker News Comments search",
+      "text": "%sql\nselect \nc.story_id,\ns.title,\nc.comment_text\nfrom hacker_news.comments c\njoin hacker_news.stories s\n  on s.id \u003d c.story_id\nwhere comment_text like (\u0027%${search_keyword\u003dSpark SQL}%\u0027)\nlimit 5",
+      "dateUpdated": "Dec 1, 2015 9:42:15 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "comment_text",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "story_id",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "comment_text",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "editorMode": "ace/mode/sql",
+        "editorHide": false,
+        "title": true
+      },
+      "settings": {
+        "params": {
+          "keyword": "Spark SQL",
+          "search_keyword": "Spark SQL"
+        },
+        "forms": {
+          "search_keyword": {
+            "name": "search_keyword",
+            "defaultValue": "Spark SQL",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1448013299962_1358524932",
+      "id": "20151120-095459_589665737",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "story_id\ttitle\tcomment_text\n9200238\tAnnouncing Spark 1.3\tHave to disagree on all points there.\u003cp\u003eSpark on YARN has been very stable and zero hassle for us. Run one command and it is deployed around the cluster and up and running. For performance Spark absolutely destroys stock MapReduce\u0026#x2F;Tez especially if like us you have a cluster with lots of basically unused RAM.\u003cp\u003eAnd Spark SQL Spark Shell are both fantastic additions to the Hadoop ecosystem.\n8014070\tJAWS – Spark SQL REST Server opensourced by Atigeo\tJAWS – Spark SQL REST Server opensourced by Atigeo\n9314413\tMapReduce and RDBMS: Practice and Theory\tWe have stored many terabytes of unaggregated transaction records in Vertica and analyzed large subsets fully ad-hoc on-the-fly in less than 5s. We have also used BigQuery to directly power dashboards with few-second response times also analyzing billions of records at a time.\u003cp\u003eOn the other hand we both build and use summary tables with Spark. (in a relational format to boot and using Spark SQL).\u003cp\u003eI think you would benefit from re-evaluating the assumptions you made 4-5 years ago.\n9314413\tMapReduce and RDBMS: Practice and Theory\tParquet + Spark SQL makes me wonder if MapReduce and columnar MPP are really so far apart?\u003cp\u003eI know they\u0026#x27;re orders of magnitude slower than e.g. Vertica today but I wonder if there is a fundamental reason for that or is it just the implementation?\n"
+      },
+      "dateCreated": "Nov 20, 2015 9:54:59 AM",
+      "dateStarted": "Dec 1, 2015 9:42:15 AM",
+      "dateFinished": "Dec 1, 2015 9:42:26 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1448962572521_-593696301",
+      "id": "20151201-093612_328962876",
+      "dateCreated": "Dec 1, 2015 9:36:12 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Example-SparkSQL-HackerNewsData - Clone",
+  "id": "EMRXYEC7CY1492051318",
+  "angularObjects": {
+    "2CENH3QDW291951492042360172": [],
+    "2CCPM2QAD291951492042360175": [],
+    "2CEJXDYSF291951492042360178": [],
+    "2CEAVURW6291951492042360133": []
+  },
+  "config": {
+    "looknfeel": "simple"
+  },
+  "info": {},
+  "source": "FCN"
+}
