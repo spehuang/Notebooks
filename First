@@ -1,0 +1,175 @@
+{
+  "paragraphs": [
+    {
+      "text": "print(\"hello world\");",
+      "user": "shuang@qubole.com",
+      "dateUpdated": "Apr 13, 2017 2:28:01 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1492050423198_903548182",
+      "id": "20170413-022703_1973301064",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "hello world"
+      },
+      "dateCreated": "Apr 13, 2017 2:27:03 AM",
+      "dateStarted": "Apr 13, 2017 2:28:01 AM",
+      "dateFinished": "Apr 13, 2017 2:29:40 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nHello ${name\u003dbigdata}",
+      "user": "shuang@qubole.com",
+      "dateUpdated": "Apr 13, 2017 2:34:17 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {
+          "name": "test"
+        },
+        "forms": {
+          "name": {
+            "name": "name",
+            "defaultValue": "bigdata",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1492050481860_63534064",
+      "id": "20170413-022801_582309775",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003cp\u003eHello test\u003c/p\u003e\n"
+      },
+      "dateCreated": "Apr 13, 2017 2:28:01 AM",
+      "dateStarted": "Apr 13, 2017 2:34:17 AM",
+      "dateFinished": "Apr 13, 2017 2:34:17 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sc.version",
+      "user": "shuang@qubole.com",
+      "dateUpdated": "Apr 13, 2017 2:34:54 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1492050644674_1380943302",
+      "id": "20170413-023044_2000223003",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "res4: String \u003d 2.0.2\n"
+      },
+      "dateCreated": "Apr 13, 2017 2:30:44 AM",
+      "dateStarted": "Apr 13, 2017 2:34:54 AM",
+      "dateFinished": "Apr 13, 2017 2:34:54 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nimport matplotlib.pyplot as plt; plt.rcdefaults()\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport StringIO\n\ndef show(p):\n    img \u003d StringIO.StringIO()\n    p.savefig(img, format\u003d\u0027svg\u0027)\n    img.seek(0)\n    print \"%html \u003cdiv style\u003d\u0027width:600px\u0027\u003e\" + img.buf + \"\u003c/div\u003e\"\n\n# Example data\npeople \u003d (\u0027Tom\u0027, \u0027Dick\u0027, \u0027Harry\u0027, \u0027Slim\u0027, \u0027Jim\u0027)\ny_pos \u003d np.arange(len(people))\nperformance \u003d 3 + 10 * np.random.rand(len(people))\nerror \u003d np.random.rand(len(people))\n\nplt.barh(y_pos, performance, xerr\u003derror, align\u003d\u0027center\u0027, alpha\u003d0.4)\nplt.yticks(y_pos, people)\nplt.xlabel(\u0027Performance\u0027)\nplt.title(\u0027How fast do you want to go today?\u0027)\n\nshow(plt)",
+      "user": "shuang@qubole.com",
+      "dateUpdated": "Apr 13, 2017 2:36:09 AM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1492050894418_-337993835",
+      "id": "20170413-023454_944489038",
+      "result": {
+        "code": "ERROR",
+        "type": "TEXT",
+        "msg": "Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark.py\", line 253, in \u003cmodule\u003e\n    eval(compiledCode)\n  File \"\u003cstring\u003e\", line 1, in \u003cmodule\u003e\nImportError: No module named matplotlib.pyplot\n"
+      },
+      "dateCreated": "Apr 13, 2017 2:34:54 AM",
+      "dateStarted": "Apr 13, 2017 2:36:09 AM",
+      "dateFinished": "Apr 13, 2017 2:36:09 AM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1492050928179_-1985226470",
+      "id": "20170413-023528_1162641714",
+      "dateCreated": "Apr 13, 2017 2:35:28 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Spencer",
+  "id": "6BQNGVGJXM1492050422",
+  "angularObjects": {
+    "2CENH3QDW291951492042360172": [],
+    "2CCPM2QAD291951492042360175": [],
+    "2CEJXDYSF291951492042360178": [],
+    "2CEAVURW6291951492042360133": []
+  },
+  "config": {},
+  "info": {},
+  "source": "FCN"
+}
